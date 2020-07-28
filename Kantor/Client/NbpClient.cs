@@ -27,16 +27,22 @@ namespace Kantor.Client
     }
     public class NbpClient
     {
-
+        // mamy tu do czynienia z RestSharp czyli wywolanie rest api 
+        // mamy metode ktora zwraca nam liste "rates" czyli tego co otrzymujemy do wyslaniu rzadania 
+        // a w parametrach mamy rzeczy o ktore chcemy sie zapytac 
         public List<Rate> GetCurrencyRates(string currency, DateTime fromDate, DateTime toDate)
         {
+            //tworzymy klienta z adresem url
             var client = new RestClient("http://api.nbp.pl/");
 
+            //tworzymy zapytanie 
             var request = new RestRequest("api/exchangerates/rates/{table}/{code}/{startDate}/{endDate}/")
+                //addurlsegment zamienia nam poszczegolne skladowe {} na parametry 
                 .AddUrlSegment("table", "C")
                 .AddUrlSegment("code", currency)
                 .AddUrlSegment("startDate", fromDate.ToString("yyyy-MM-dd"))
                 .AddUrlSegment("endDate", toDate.ToString("yyyy-MM-dd"));
+
             var response = client.Get<Response>(request);
 
             return response.Data.rates;

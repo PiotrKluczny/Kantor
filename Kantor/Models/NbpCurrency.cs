@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Kantor.Models
 {
+    //nasz model ktory pozniej bedziemy wykorzystywac z baza danych. 
     public class NbpCurrency
     {
         [Key]

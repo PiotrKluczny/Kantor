@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 
 namespace Kantor.Models
 {
+    //polaczenie sie z baza danych
     public class NbpDbContext : DbContext
     {
         public DbSet<NbpCurrency> NbpCurrencys { get; set; }
 
+        //tworzymy baze danych ale w pliku. 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlite("Filename=MyDatabase.db");
