@@ -15,13 +15,19 @@ namespace Kantor.Controllers
     [Route("[controller]")]
     public class NbpController : ControllerBase
     {
-        
 
         private readonly ILogger<NbpController> _logger;
 
         public NbpController(ILogger<NbpController> logger)
         {
             _logger = logger;
+        }
+
+        private readonly IEnumerable<NbpLogic> _nbpLogics;
+
+        public NbpController(IEnumerable<NbpLogic> nbpLogics)
+        {
+            _nbpLogics = nbpLogics;
         }
 
         [HttpGet("{currency}/{from}/{to}")]
@@ -36,35 +42,12 @@ namespace Kantor.Controllers
             // napisac iterface proces magaere i wstrzyknąc go jako zaleznosc do kontrolera 
             // stworzyc interfaje nbp clienta i wstrzyknac go jako zaleznosc do kontrolera.
 
-            //var fromDate = DateTime.ParseExact(from, "yyyy-MM-dd", null);
-            //var toDate = DateTime.ParseExact(to, "yyyy-MM-dd", null);
 
-            //var client = new NbpClient();
 
-            //var result = client.GetCurrencyRates(currency, fromDate, toDate);
 
-            //var avg = Math.Round(result.Select(x => x.bid).Average(), 4);
+           
 
-            //var od = Math.Round(result.Select(x => x.ask).StdDev(), 4);
-
-            //var nbpcurrency = new NbpCurrency();
-
-            //nbpcurrency.Currency = currency;
-            //nbpcurrency.FromDate = fromDate;
-            //nbpcurrency.ToDate = toDate;
-            //nbpcurrency.Average = avg;
-            //nbpcurrency.Deviation = od;
-            //nbpcurrency.TimeStape = DateTime.Now;
-
-            //using (var context = new NbpDbContext())
-            //{
-            //    context.NbpCurrencys.Add(nbpcurrency);
-            //    context.SaveChanges();
-            //}
-
-            var nbpcurrency = new NbpLogic();
-
-            var result = nbpcurrency.GetBack(currency, from, to);
+            var result = _nbpLogics.GetBack(currency, from, to);
 
             return Ok(result);
         }
