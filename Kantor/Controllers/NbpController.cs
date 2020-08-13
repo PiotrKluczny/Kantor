@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using Kantor.Client;
+using Kantor.Interfaces;
 using Kantor.Logic;
 using Kantor.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -17,18 +18,14 @@ namespace Kantor.Controllers
     {
 
         private readonly ILogger<NbpController> _logger;
+        private readonly INbpLogic _nbpLogic;
 
-        public NbpController(ILogger<NbpController> logger)
+        public NbpController(ILogger<NbpController> logger, INbpLogic nbpLogic)
         {
             _logger = logger;
+            _nbpLogic = nbpLogic;
         }
 
-        private readonly IEnumerable<NbpLogic> _nbpLogics;
-
-        public NbpController(IEnumerable<NbpLogic> nbpLogics)
-        {
-            _nbpLogics = nbpLogics;
-        }
 
         [HttpGet("{currency}/{from}/{to}")]
         public IActionResult Get(string currency, string from, string to)
@@ -42,12 +39,7 @@ namespace Kantor.Controllers
             // napisac iterface proces magaere i wstrzyknąc go jako zaleznosc do kontrolera 
             // stworzyc interfaje nbp clienta i wstrzyknac go jako zaleznosc do kontrolera.
 
-
-
-
-           
-
-            var result = _nbpLogics.GetBack(currency, from, to);
+           var result = _nbpLogic.GetBack(currency, from, to);
 
             return Ok(result);
         }

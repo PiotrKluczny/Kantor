@@ -1,5 +1,6 @@
 ﻿using Kantor.Client;
 using Kantor.Controllers;
+using Kantor.Interfaces;
 using Kantor.Models;
 using Newtonsoft.Json;
 using System;
@@ -10,8 +11,14 @@ using System.Threading.Tasks;
 
 namespace Kantor.Logic
 {
-    public class NbpLogic
-    { 
+    public class NbpLogic : INbpLogic
+    {
+        private readonly INbpFile _nbpFile;
+
+        public NbpLogic(INbpFile nbpFile)
+        {
+            _nbpFile = nbpFile;
+        }
         public NbpCurrency GetBack(string currency, string from, string to)
         {
             var fromDate = DateTime.ParseExact(from, "yyyy-MM-dd", null);
@@ -37,37 +44,42 @@ namespace Kantor.Logic
             using (var context = new NbpDbContext())
             {
                 context.NbpCurrencys.Add(nbpCurrencyLogic);
-                
+
                 context.SaveChanges();
             }
 
-            string filePath = @"C:\LocalRepository\Kantor\jsonFile.txt";
+            //string filePath = @"C:\LocalRepository\Kantor\jsonFile.txt";
 
-            string json = JsonConvert.SerializeObject(nbpCurrencyLogic);
+            //string json = JsonConvert.SerializeObject(nbpCurrencyLogic);
 
-            if (!File.Exists(filePath))
-            {
-                using (File.Create(filePath)) { };
-                
-                File.WriteAllText(filePath, json);
-            }
-            else
-            {
-                string resultA = json;
+            //if (!File.Exists(filePath))
+            //{
+            //    using (File.Create(filePath)) { };
 
-                using (StreamReader streamReader = File.OpenText(filePath))
-                {
-                    ;
-                    while ((json = streamReader.ReadLine()) == null)
-                    {
-                        resultA += json;
-                    }
-                }
-                File.AppendAllText(filePath, resultA);
-            }
+            //    File.WriteAllText(filePath, json);
+            //}
+            //else
+            //{
+            //    string resultA = json;
+
+            //    using (StreamReader streamReader = File.OpenText(filePath))
+            //    {
+            //        ;
+            //        while ((json = streamReader.ReadLine()) == null)
+            //        {
+            //            resultA += json;
+            //        }
+            //    }
+            //    File.AppendAllText(filePath, resultA);
+            //}
+
+            _nbpFile.SaveFile(nbpCurrencyLogic);
 
 
             return nbpCurrencyLogic;
         }
     }
+
+   
+
 }
