@@ -1,6 +1,9 @@
 ﻿using Kantor.Interfaces;
 using Kantor.Models;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using Serilog.Settings.Configuration;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,20 +16,45 @@ namespace Kantor.Logic
     {
         private static NbpCurrency nbpCurrencyLogic;
 
-        static string folderPath = @"c:\Kantora\";
-        static string fileName = "jsonFile.txt";
+        //static string folderPath = @"c:\Kantora\";
+        //static string fileName = "jsonFile.txt";
 
-        string pathString = Path.Combine(folderPath, fileName);
+        //private readonly IConfiguration Configuration;
+
+        //public NbpFile (IConfiguration configuration)
+        //{
+        //    Configuration = configuration;
+        //}
+
+        //string pathString = Path.Combine(folderPath, fileName);
+
+        private readonly NbpFilePath _nbpFilePath;
+
+        public NbpFile(IOptions<NbpFilePath> nbpFilePath)
+        {
+            _nbpFilePath = nbpFilePath.Value;
+        }
 
         string json = JsonConvert.SerializeObject(nbpCurrencyLogic);
 
         public void SaveFile(NbpCurrency nbpCurrencyLogic)
         {
+            var nbpFilePath = new NbpFilePath();
+            string folderPath = _nbpFilePath.FolderPath;
+            string filePath = _nbpFilePath.FilePath;
 
+            // Configuration.GetSection(NbpFilePath.PathDirections).Bind(nbpFilePath);
+
+            string pathString = Path.Combine(folderPath, filePath);
+
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            } 
+ 
             if (!File.Exists(pathString))
             {
                 using (File.Create(pathString)) { };
-
                 File.WriteAllText(pathString, json);
             }
             else

@@ -23,13 +23,9 @@ namespace Kantor.Logic
         {
             var fromDate = DateTime.ParseExact(from, "yyyy-MM-dd", null);
             var toDate = DateTime.ParseExact(to, "yyyy-MM-dd", null);
-
             var client = new NbpClient();
-
             var result = client.GetCurrencyRates(currency, fromDate, toDate);
-
             var avg = Math.Round(result.Select(x => x.bid).Average(), 4);
-
             var od = Math.Round(result.Select(x => x.ask).StdDev(), 4);
 
             var nbpCurrencyLogic = new NbpCurrency();
@@ -48,33 +44,7 @@ namespace Kantor.Logic
                 context.SaveChanges();
             }
 
-            //string filePath = @"C:\LocalRepository\Kantor\jsonFile.txt";
-
-            //string json = JsonConvert.SerializeObject(nbpCurrencyLogic);
-
-            //if (!File.Exists(filePath))
-            //{
-            //    using (File.Create(filePath)) { };
-
-            //    File.WriteAllText(filePath, json);
-            //}
-            //else
-            //{
-            //    string resultA = json;
-
-            //    using (StreamReader streamReader = File.OpenText(filePath))
-            //    {
-            //        ;
-            //        while ((json = streamReader.ReadLine()) == null)
-            //        {
-            //            resultA += json;
-            //        }
-            //    }
-            //    File.AppendAllText(filePath, resultA);
-            //}
-
             _nbpFile.SaveFile(nbpCurrencyLogic);
-
 
             return nbpCurrencyLogic;
         }

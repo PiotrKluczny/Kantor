@@ -8,6 +8,6 @@ namespace Kantor.Interfaces
 {
     public interface INbpFile
     {
-        public void SaveFile(NbpCurrency nbpCurrencyLogic);
+         void SaveFile(NbpCurrency nbpCurrencyLogic);
     }
 }

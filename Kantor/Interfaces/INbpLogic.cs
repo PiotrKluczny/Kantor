@@ -8,7 +8,7 @@ namespace Kantor.Interfaces
 {
     public interface INbpLogic
     {
-        public NbpCurrency GetBack(string currency, string from, string to);
+        NbpCurrency GetBack(string currency, string from, string to);
         
     }
 }

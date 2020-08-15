@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Kantor.Interfaces;
+using Kantor.Logic;
 using Kantor.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -26,13 +28,24 @@ namespace Kantor
             }
         }
 
-        public IConfiguration Configuration { get; }
+        public IConfiguration Configuration { get; private set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //dodalismy to do konfiguracji appsetting. zobaczymy czy dobrze
+            var pathConfiguration =
+                Configuration.GetSection("PathDirections");
+            services.Configure<NbpFilePath>(pathConfiguration);
+
             services.AddControllers();
             services.AddEntityFrameworkSqlite().AddDbContext<NbpDbContext>();
+            //dodane services aby zarejestrowac interfajsy uzyte do apce
+            services.AddTransient<INbpLogic, NbpLogic>();
+            services.AddTransient<INbpFile, NbpFile>();
+
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,5 +65,6 @@ namespace Kantor
                 endpoints.MapControllers();
             });
         }
+       
     }
 }
