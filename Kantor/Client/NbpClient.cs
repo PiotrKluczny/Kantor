@@ -1,4 +1,5 @@
-﻿using RestSharp;
+﻿using Kantor.Interfaces;
+using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,10 +24,11 @@ namespace Kantor.Client
         public string currency { get; set; }
         public string code { get; set; }
         public List<Rate> rates { get; set; }
-
     }
-    public class NbpClient
+
+    public class NbpClient : INbpClient
     {
+
         // mamy tu do czynienia z RestSharp czyli wywolanie rest api 
         // mamy metode ktora zwraca nam liste "rates" czyli tego co otrzymujemy do wyslaniu rzadania 
         // a w parametrach mamy rzeczy o ktore chcemy sie zapytac 

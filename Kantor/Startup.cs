@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Kantor.Client;
 using Kantor.Interfaces;
 using Kantor.Logic;
 using Kantor.Models;
@@ -40,11 +41,11 @@ namespace Kantor
 
             services.AddControllers();
             services.AddEntityFrameworkSqlite().AddDbContext<NbpDbContext>();
+           
             //dodane services aby zarejestrowac interfajsy uzyte do apce
             services.AddTransient<INbpLogic, NbpLogic>();
             services.AddTransient<INbpFile, NbpFile>();
-
-
+            services.AddTransient<INbpClient, NbpClient>();
 
         }
 

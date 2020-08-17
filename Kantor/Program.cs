@@ -27,23 +27,35 @@ namespace Kantor
             .ReadFrom.Configuration(configuration)
             .MinimumLevel.Information()
             //dodalismy do logow ze logi z microsoftu beda dodawane do logow ale od poziomu warning
-            .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+            //.MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
             //dodalismy do logow ze logi z systemu beda dodawane do logow ale od poziomu error
-            .MinimumLevel.Override("System", LogEventLevel.Error)
-            .Enrich.FromLogContext()
-            .Enrich.WithProperty("ApplicationName", typeof(Program).Assembly.GetName().Name)
-            .Enrich.WithProperty("Environment", Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"))
-            .WriteTo.File(new RenderedCompactJsonFormatter(),"logs/log.log", rollingInterval: RollingInterval.Day)
+            //.MinimumLevel.Override("System", LogEventLevel.Error)
+            .WriteTo.Console()
+            .WriteTo.File("log.txt")
             .CreateLogger();
-            Log.Information("No one listens to me!");
+
+            try
+            {
+                Log.Information("Starting web host");
+                CreateHostBuilder(args).Build().Run();
+               
+            }
+            catch (Exception ex)
+            {
+                Log.Fatal(ex, "Host terminated unexpectedly");
+               
+            }
+            finally
+            {
+                Log.CloseAndFlush();
+            }
 
 
-          
+
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .UseSerilog(Log.Logger)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();

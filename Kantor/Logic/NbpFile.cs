@@ -14,20 +14,6 @@ namespace Kantor.Logic
 {
     public class NbpFile : INbpFile
     {
-        private static NbpCurrency nbpCurrencyLogic;
-
-        //static string folderPath = @"c:\Kantora\";
-        //static string fileName = "jsonFile.txt";
-
-        //private readonly IConfiguration Configuration;
-
-        //public NbpFile (IConfiguration configuration)
-        //{
-        //    Configuration = configuration;
-        //}
-
-        //string pathString = Path.Combine(folderPath, fileName);
-
         private readonly NbpFilePath _nbpFilePath;
 
         public NbpFile(IOptions<NbpFilePath> nbpFilePath)
@@ -35,13 +21,14 @@ namespace Kantor.Logic
             _nbpFilePath = nbpFilePath.Value;
         }
 
-        string json = JsonConvert.SerializeObject(nbpCurrencyLogic);
 
         public void SaveFile(NbpCurrency nbpCurrencyLogic)
         {
             var nbpFilePath = new NbpFilePath();
             string folderPath = _nbpFilePath.FolderPath;
             string filePath = _nbpFilePath.FilePath;
+            string json = JsonConvert.SerializeObject(nbpCurrencyLogic);
+
 
             // Configuration.GetSection(NbpFilePath.PathDirections).Bind(nbpFilePath);
 
@@ -50,7 +37,7 @@ namespace Kantor.Logic
             if (!Directory.Exists(folderPath))
             {
                 Directory.CreateDirectory(folderPath);
-            } 
+            }
  
             if (!File.Exists(pathString))
             {

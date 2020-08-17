@@ -44,6 +44,20 @@ namespace Kantor.Migrations
 
                     b.ToTable("NbpCurrencys");
                 });
+
+            modelBuilder.Entity("Kantor.Models.NbpCurrencyDictionare", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Currency")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("NbpCurrencyDictionares");
+                });
 #pragma warning restore 612, 618
         }
     }

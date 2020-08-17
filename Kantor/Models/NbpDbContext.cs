@@ -10,6 +10,7 @@ namespace Kantor.Models
     public class NbpDbContext : DbContext
     {
         public DbSet<NbpCurrency> NbpCurrencys { get; set; }
+        public DbSet<NbpCurrencyDictionare> NbpCurrencyDictionares { get; set; }
 
         //tworzymy baze danych ale w pliku. 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

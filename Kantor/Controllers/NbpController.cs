@@ -6,6 +6,7 @@ using Kantor.Logic;
 using Kantor.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace Kantor.Controllers
 {
@@ -37,6 +38,8 @@ namespace Kantor.Controllers
             // stworzyc interfaje nbp clienta i wstrzyknac go jako zaleznosc do kontrolera.
 
            var result = _nbpLogic.GetBack(currency, from, to);
+
+            _logger.LogError("ok", result);
 
             return Ok(result);
         }

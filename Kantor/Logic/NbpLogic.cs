@@ -2,7 +2,9 @@
 using Kantor.Controllers;
 using Kantor.Interfaces;
 using Kantor.Models;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Newtonsoft.Json;
+using RestSharp.Extensions;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,22 +16,24 @@ namespace Kantor.Logic
     public class NbpLogic : INbpLogic
     {
         private readonly INbpFile _nbpFile;
+        private readonly INbpClient _nbpClient;
 
-        public NbpLogic(INbpFile nbpFile)
+        public NbpLogic(INbpFile nbpFile, INbpClient nbpClient)
         {
             _nbpFile = nbpFile;
+            _nbpClient = nbpClient;
         }
         public NbpCurrency GetBack(string currency, string from, string to)
         {
+            
+
             var fromDate = DateTime.ParseExact(from, "yyyy-MM-dd", null);
             var toDate = DateTime.ParseExact(to, "yyyy-MM-dd", null);
-            var client = new NbpClient();
-            var result = client.GetCurrencyRates(currency, fromDate, toDate);
+            var result = _nbpClient.GetCurrencyRates(currency, fromDate, toDate);
             var avg = Math.Round(result.Select(x => x.bid).Average(), 4);
             var od = Math.Round(result.Select(x => x.ask).StdDev(), 4);
 
             var nbpCurrencyLogic = new NbpCurrency();
-
             nbpCurrencyLogic.Currency = currency;
             nbpCurrencyLogic.FromDate = fromDate;
             nbpCurrencyLogic.ToDate = toDate;
@@ -44,7 +48,48 @@ namespace Kantor.Logic
                 context.SaveChanges();
             }
 
-            _nbpFile.SaveFile(nbpCurrencyLogic);
+            NbpCurrencyDictionare nbpCurrencyDictionare = new NbpCurrencyDictionare();
+
+            if (currency.Equals(nbpCurrencyDictionare.Currency))
+            {
+                _nbpFile.SaveFile(nbpCurrencyLogic);
+
+            }
+            else
+            {
+                Console.WriteLine("Ups, coś nie tak poszło");
+            }
+
+
+            //List<string> currencyList = new List<string>();
+
+            //currencyList.Add("AUD");
+            //currencyList.Add("CAD");
+            //currencyList.Add("HUF");
+            //currencyList.Add("CHF"); 
+            //currencyList.Add("GBP");
+            //currencyList.Add("JPY");
+            //currencyList.Add("CZK");
+            //currencyList.Add("DKK");
+            //currencyList.Add("NOK");
+            //currencyList.Add("SEK");
+
+            //int ite = 0;
+
+            //foreach (var item in currencyList)
+            //{
+            //    NbpCurrencyDictionare nbpCurrencyDictionare = new NbpCurrencyDictionare()
+            //    {
+            //        Currency = item
+            //    };
+
+            //    NbpCurrencyLogic nbpCurrencyLogicA = new NbpCurrencyLogic();
+            //    nbpCurrencyLogicA.SaveCurrencyValues(nbpCurrencyDictionare);
+
+            //    ite++;
+            //}
+
+            //_nbpFile.SaveFile(nbpCurrencyLogic);
 
             return nbpCurrencyLogic;
         }
