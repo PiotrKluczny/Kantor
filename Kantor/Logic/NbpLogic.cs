@@ -17,6 +17,7 @@ namespace Kantor.Logic
     {
         private readonly INbpFile _nbpFile;
         private readonly INbpClient _nbpClient;
+        private NbpCurrencyDictionare nbpCurrencyDictionare;
 
         public NbpLogic(INbpFile nbpFile, INbpClient nbpClient)
         {
@@ -41,25 +42,30 @@ namespace Kantor.Logic
             nbpCurrencyLogic.Deviation = od;
             nbpCurrencyLogic.TimeStape = DateTime.Now;
 
+            //using (var context = new NbpDbContext())
+            //{
+            //    context.NbpCurrencys.Add(nbpCurrencyLogic);
+
+            //    context.SaveChanges();
+            //}
+
             using (var context = new NbpDbContext())
             {
+
                 context.NbpCurrencys.Add(nbpCurrencyLogic);
 
                 context.SaveChanges();
+
+                if (currency.Equals(context.NbpCurrencyDictionares))
+                {
+                    _nbpFile.SaveFile(nbpCurrencyLogic);
+
+                }
+                else
+                {
+                    Console.WriteLine("Ups, coś nie tak poszło");
+                }
             }
-
-            NbpCurrencyDictionare nbpCurrencyDictionare = new NbpCurrencyDictionare();
-
-            if (currency.Equals(nbpCurrencyDictionare.Currency))
-            {
-                _nbpFile.SaveFile(nbpCurrencyLogic);
-
-            }
-            else
-            {
-                Console.WriteLine("Ups, coś nie tak poszło");
-            }
-
 
             //List<string> currencyList = new List<string>();
 
@@ -92,6 +98,7 @@ namespace Kantor.Logic
             //_nbpFile.SaveFile(nbpCurrencyLogic);
 
             return nbpCurrencyLogic;
+        
         }
     }
 
