@@ -49,6 +49,5 @@ namespace Kantor.Client
 
             return response.Data.rates;
         }
-
     }
 }

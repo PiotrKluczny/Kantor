@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30309.148
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kantor", "Kantor\Kantor.csproj", "{49C33223-893F-48B5-A074-98699C07D0B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kantor", "Kantor\Kantor.csproj", "{49C33223-893F-48B5-A074-98699C07D0B0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

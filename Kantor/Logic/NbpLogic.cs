@@ -1,8 +1,12 @@
-﻿using Kantor.Client;
+﻿using FluentValidation.Internal;
+using Kantor.Client;
 using Kantor.Controllers;
 using Kantor.Interfaces;
+using Kantor.Message;
 using Kantor.Models;
+using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using RestSharp.Extensions;
 using System;
@@ -56,14 +60,17 @@ namespace Kantor.Logic
 
                 context.SaveChanges();
 
-                if (currency.Equals(context.NbpCurrencyDictionares))
+                var exit = context.NbpCurrencyDictionares.Any(x => x.Currency == currency);
+
+                if (exit)
                 {
                     _nbpFile.SaveFile(nbpCurrencyLogic);
 
                 }
                 else
                 {
-                    Console.WriteLine("Ups, coś nie tak poszło");
+                    Console.WriteLine( "Ups, coś poszło nie tak");
+                    
                 }
             }
 
@@ -88,13 +95,10 @@ namespace Kantor.Logic
             //    {
             //        Currency = item
             //    };
-
             //    NbpCurrencyLogic nbpCurrencyLogicA = new NbpCurrencyLogic();
             //    nbpCurrencyLogicA.SaveCurrencyValues(nbpCurrencyDictionare);
-
             //    ite++;
             //}
-
             //_nbpFile.SaveFile(nbpCurrencyLogic);
 
             return nbpCurrencyLogic;
