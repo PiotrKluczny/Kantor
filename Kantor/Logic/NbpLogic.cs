@@ -63,9 +63,6 @@ namespace Kantor.Logic
                 }
             }
 
-                //NbpCurrencyLogic nbpCurrencyLogicA = new NbpCurrencyLogic();
-                //nbpCurrencyLogicA.SaveCurrencyValues();
-
             _nbpFile.SaveFile(nbpCurrencyLogic);
 
             return nbpCurrencyLogic;

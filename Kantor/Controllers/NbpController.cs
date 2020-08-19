@@ -14,7 +14,6 @@ namespace Kantor.Controllers
     [Route("[controller]")]
     public class NbpController : ControllerBase
     {
-
         private readonly ILogger<NbpController> _logger;
         private readonly INbpLogic _nbpLogic;
         private readonly INbpCurrencyLogic _nbpCurrencyLogic;
@@ -26,22 +25,25 @@ namespace Kantor.Controllers
             _nbpCurrencyLogic = nbpCurrencyLogic;
         }
 
-
         [HttpGet("{currency}/{from}/{to}")]
         public IActionResult Get(string currency, string from, string to)
         {
 
            var result = _nbpLogic.GetBack(currency, from, to);
-            _logger.LogError("ok", result);
+            _logger.LogInformation("Test logging");
+           // Log.Information("information level");
             return Ok(result);
         }
 
         [HttpGet("reload")]
         
-        public void Result()
+        public void ReloadCurrencyValue()
         {
+            _logger.LogInformation("DUPA");
              _nbpCurrencyLogic.SaveCurrencyValues();
+           
         }
+
 
     }
 

@@ -41,6 +41,7 @@ namespace Kantor
             services.Configure<NbpFilePath>(pathConfiguration);
 
             services.AddControllers();
+            //rejestracja bazy danych
             services.AddEntityFrameworkSqlite().AddDbContext<NbpDbContext>();
            
             //dodane services aby zarejestrowac interfajsy uzyte do apce
