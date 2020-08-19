@@ -17,33 +17,31 @@ namespace Kantor.Controllers
 
         private readonly ILogger<NbpController> _logger;
         private readonly INbpLogic _nbpLogic;
+        private readonly INbpCurrencyLogic _nbpCurrencyLogic;
 
-        public NbpController(ILogger<NbpController> logger, INbpLogic nbpLogic)
+        public NbpController(ILogger<NbpController> logger, INbpLogic nbpLogic, INbpCurrencyLogic nbpCurrencyLogic)
         {
             _logger = logger;
             _nbpLogic = nbpLogic;
+            _nbpCurrencyLogic = nbpCurrencyLogic;
         }
 
 
         [HttpGet("{currency}/{from}/{to}")]
         public IActionResult Get(string currency, string from, string to)
         {
-            // zadanie domowe:
-            // wyniesc do klasy ale proces maganer***
-            // zapisac wynik do pliku json (wszystko do jednego)***
-            // zalogowac serilogiem
-            // i zapisac do bazy***
-            // i zwrocic odpowiedz tutaj w requescie 
-            // napisac iterface proces magaere i wstrzyknąc go jako zaleznosc do kontrolera 
-            // stworzyc interfaje nbp clienta i wstrzyknac go jako zaleznosc do kontrolera.
 
            var result = _nbpLogic.GetBack(currency, from, to);
-
             _logger.LogError("ok", result);
-
             return Ok(result);
         }
 
+        [HttpGet("reload")]
+        
+        public void Result()
+        {
+             _nbpCurrencyLogic.SaveCurrencyValues();
+        }
 
     }
 

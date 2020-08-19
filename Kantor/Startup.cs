@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using static Kantor.Client.ResponseTable;
 
 
 namespace Kantor
@@ -46,7 +47,8 @@ namespace Kantor
             services.AddTransient<INbpLogic, NbpLogic>();
             services.AddTransient<INbpFile, NbpFile>();
             services.AddTransient<INbpClient, NbpClient>();
-
+            services.AddTransient<INbpCurrencyLogic, NbpCurrencyLogic>();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

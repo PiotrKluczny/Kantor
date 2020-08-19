@@ -8,6 +8,7 @@ namespace Kantor.Interfaces
 {
     public interface INbpClient
     {
-         List<Rate> GetCurrencyRates(string currency, DateTime fromDate, DateTime toDate);
+         List<RateTable> GetCurrencyRates(string currency, DateTime fromDate, DateTime toDate);
+         List<string> GetReloadDictionary();
     }
 }

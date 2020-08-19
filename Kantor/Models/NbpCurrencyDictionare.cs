@@ -9,7 +9,7 @@ namespace Kantor.Models
     public class NbpCurrencyDictionare
     {
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string Currency { get; set; }
 
     }
