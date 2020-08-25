@@ -2,6 +2,9 @@
 using CsvHelper;
 using CsvHelper.Configuration;
 using CsvHelper.TypeConversion;
+using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -27,11 +30,33 @@ namespace BogusApp
                 context.SaveChanges();
             }
 
+            using (StreamReader reader = File.OpenText(@"C:\LocalRepository\Kantor\BogusApp\Settings.json"))
+            {
+                FilePath pathJson = JsonConvert.DeserializeObject<FilePath>(reader.ToString());
+                string path = pathJson.PathDb;
+            }
         }
-        static string pathName = $"C:\\Database\\BogusAppData{Guid.NewGuid()}.csv";
+
+
+        
+        //string pathJson = JsonConvert.SerializeObject("Settings.json");
+
+        //static string pathName = $"{path}";
+
+        static string PathName()
+        {
+            using (StreamReader reader = File.OpenText(@"C:\LocalRepository\Kantor\BogusApp\Settings.json"))
+            {
+                FilePath pathJson = JsonConvert.DeserializeObject<FilePath>(reader.ToString());
+                return pathJson.PathFile;
+            }
+        }
 
         static void Export(IEnumerable<Person> persons)
         {
+            var path = PathName(); 
+
+            string pathName = $"{path}";
 
             using (var writer = new StreamWriter(pathName, true))
             {
@@ -47,7 +72,9 @@ namespace BogusApp
 
         static IEnumerable<Person> Import()
         {
-            using(var reader = new StreamReader(pathName))
+            var path = PathName();
+
+            using (var reader = new StreamReader(path))
             {
                 using (var csvR = new CsvReader(reader, CultureInfo.InvariantCulture))
                 {
